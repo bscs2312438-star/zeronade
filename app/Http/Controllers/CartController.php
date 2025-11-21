@@ -19,7 +19,8 @@ class CartController extends Controller
 
         $cart[] = [
             'name' => $request->bike_name,
-            'price' => $request->bike_price
+            'price' => $request->bike_price,
+            'quantity' => 1
         ];
 
         session(['cart' => $cart]);
@@ -34,6 +35,20 @@ class CartController extends Controller
         $cart = array_values($cart);
         session(['cart' => $cart]);
 
+        return redirect()->route('cart.index');
+    }
+
+    public function update(Request $request)
+    {
+        $cart = session('cart', []);
+        $index = $request->index;
+        $quantity = max(1, (int)$request->quantity);
+
+        if(isset($cart[$index])) {
+            $cart[$index]['quantity'] = $quantity;
+        }
+
+        session(['cart' => $cart]);
         return redirect()->route('cart.index');
     }
 

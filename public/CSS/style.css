@@ -209,3 +209,33 @@ nav a.active, nav a:hover { background: rgba(139, 0, 0, 0.12); color: var(--acce
   .bike-title { font-size: 1.1rem; }
   .bike-description { font-size: 0.9rem; }
 }
+/* Quantity input in cart */
+.cart-container input[type="number"] {
+  color: #000;                 /* font color black */
+  background-color: #fff;      /* white background for contrast */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 8px;
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Update button next to quantity */
+.cart-container button[type="submit"] {
+  background-color: #8b0000;  /* matches your accent color */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 5px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.cart-container button[type="submit"]:hover {
+  background-color: #a00000;
+}
+
+

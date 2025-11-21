@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="cart-container">
-  <h2><br><h2>
+  <h2>Your Cart</h2>
 
   @if(session('message'))
     <div class="msg">{{ session('message') }}</div>
@@ -16,20 +16,31 @@
       <th>Remove</th>
       <th>Bike</th>
       <th>Price</th>
+      <th>Quantity</th>
+      <th>Subtotal</th>
     </tr>
     @php $total = 0; @endphp
     @foreach($cart as $index => $item)
       <tr>
         <td>
-          <form action="{{ route('cart.remove') }}" method="POST" style="margin:0;">
+          <form action="{{ route('cart.remove') }}" method="POST">
             @csrf
             <button type="submit" name="remove" value="{{ $index }}" class="remove-btn">✖</button>
           </form>
         </td>
         <td>{{ $item['name'] }}</td>
         <td>Rs {{ number_format($item['price']) }}</td>
+        <td>
+          <form action="{{ route('cart.update') }}" method="POST">
+            @csrf
+            <input type="hidden" name="index" value="{{ $index }}">
+            <input type="number" name="quantity" value="{{ $item['quantity'] ?? 1 }}" min="1" style="width:60px;">
+            <button type="submit">Update</button>
+          </form>
+        </td>
+        <td>Rs {{ number_format($item['price'] * ($item['quantity'] ?? 1)) }}</td>
       </tr>
-      @php $total += $item['price']; @endphp
+      @php $total += $item['price'] * ($item['quantity'] ?? 1); @endphp
     @endforeach
   </table>
 

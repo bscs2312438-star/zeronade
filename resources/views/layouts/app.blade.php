@@ -13,8 +13,8 @@
       <ul>
         <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
         <li><a href="{{ url('/') }}#catalog">Bikes</a></li>
-        <li><a href="{{ url('/customize') }}" class="{{ request()->is('customize') ? 'active' : '' }}">Customize</a></li>
         <li><a href="{{ url('/cart') }}" class="{{ request()->is('cart') ? 'active' : '' }}">Cart</a></li>
+        <li><a href="{{ url('admin/products') }}">Admin</a></li>
       </ul>
     </nav>
   </header>
