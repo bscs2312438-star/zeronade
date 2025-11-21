@@ -36,7 +36,11 @@
         border-radius: 5px;
         border: 1px solid #ccc;
         width: 100%;
-        background: #f9f9f9;
+        background: #fff;       /* White background */
+        color: #000;            /* Black text */
+    }
+    .form-input::placeholder {
+        color: #888;            /* Gray placeholder */
     }
     .btn {
         display: inline-block;
