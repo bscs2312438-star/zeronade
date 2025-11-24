@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\MemberController;
 use App\Models\Product;
 
 /*
@@ -11,8 +12,6 @@ use App\Models\Product;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application.
-| These routes are loaded by the RouteServiceProvider within a group
-| that contains the "web" middleware group.
 |
 */
 
@@ -20,10 +19,7 @@ use App\Models\Product;
 // Home / Index page (dynamic)
 // -------------------------------
 Route::get('/', function () {
-    // Fetch all products from the database
     $products = Product::all();
-
-    // Pass products to the index view
     return view('index', compact('products'));
 })->name('home');
 
@@ -38,15 +34,12 @@ Route::get('/customize', function () {
 // Dynamic single product page
 // -------------------------------
 Route::get('/product/{slug}', function ($slug) {
-    // Fetch product by slug or fail if not found
     $product = Product::where('slug', $slug)->firstOrFail();
-
-    // Pass product to the single product view
     return view('products.show', compact('product'));
 })->name('product.show');
 
 // -------------------------------
-// Cart routes (controller-based)
+// Cart routes
 // -------------------------------
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
@@ -55,8 +48,17 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 // -------------------------------
-// Admin CRUD routes
+// Public Members Page (unified index)
+// -------------------------------
+Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+
+// -------------------------------
+// Admin CRUD routes (Products + Members)
 // -------------------------------
 Route::prefix('admin')->group(function () {
+    // Products CRUD
     Route::resource('products', ProductController::class);
+
+    // Members CRUD (admin only)
+    Route::resource('members', MemberController::class)->except(['index', 'show']);
 });

@@ -275,3 +275,69 @@ nav a.active, nav a:hover { background: rgba(139, 0, 0, 0.12); color: var(--acce
 .admin-form button:hover {
   background-color: #a00000;
 }
+/* admin form inputs (black text) */
+.admin-form .form-input,
+.admin-form input[type="text"],
+.admin-form input[type="date"],
+.admin-form input[type="number"],
+.admin-form textarea,
+.admin-form select {
+  color: #000 !important;
+  background: #fff !important;
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.members-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff; /* white background for contrast */
+    color: #000; /* black text */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.members-table th, .members-table td {
+    padding: 12px 15px;
+    text-align: left;
+    color: #000; /* force black text */
+}
+
+.members-table th {
+    background: #f0f0f0; /* light header */
+    font-weight: bold;
+}
+.members-table tr:nth-child(even) {
+    background: #fafafa; /* light alternating row */
+}
+/* Make all table text black */
+.members-table, 
+.members-table th, 
+.members-table td {
+    color: #000 !important;      /* force text color to black */
+    background-color: #fff;       /* optional: white background for clarity */
+    border: 1px solid #ddd;       /* optional: add borders */
+}
+
+/* Table headers */
+.members-table th {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
+/* Alternating row colors */
+.members-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Ensure links in table are black */
+.members-table a {
+    color: #000 !important;
+    text-decoration: none;
+}
+
+.members-table a:hover {
+    color: #007bff; /* optional hover color */
+}
