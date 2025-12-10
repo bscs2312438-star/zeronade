@@ -43,7 +43,7 @@
 .hero {
     color: white;
     text-align: center;
-    height: 100vh; 
+    height: 100vh;
     position: relative;
     display: flex;
     align-items: center;
