@@ -8,10 +8,28 @@ use App\Models\Product;
 use App\Http\Controllers\CartController;
 
 // Home page
+// Root route - Redirection logic
 Route::get('/', function () {
-    $products = Product::all();
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->role === 'admin') {
+        return redirect('/admin/products');
+    }
+
+    return redirect()->route('home');
+});
+
+// Home page (Catalog) - Logic previously at /
+Route::get('/home', function () {
+    $products = Product::when(request('category'), function ($query) {
+        return $query->whereHas('category', function ($q) {
+            $q->where('slug', request('category'));
+        });
+    })->get();
     return view('index', compact('products'));
-})->name('home');
+})->name('home')->middleware('auth');
 
 // Customize page
 Route::get('/customize', function () {
@@ -48,10 +66,16 @@ Route::prefix('admin')->middleware('isAdmin')->group(function () {
 
     // Members CRUD (excluding index/show)
     Route::resource('members', MemberController::class)->except(['index', 'show']);
+
+    // Order History
+    Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show']);
 });
 
 // Admin auth routes
+// Auth routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
+Route::post('/signup', [AuthController::class, 'register'])->name('signup.submit');
 

@@ -8,9 +8,7 @@ class isAdmin
 {
     public function handle($request, Closure $next)
     {
-        $admin = session('admin');
-
-        if ($admin && $admin['role'] === 'admin') {
+        if (auth()->check() && auth()->user()->role === 'admin') {
             return $next($request);
         }
 

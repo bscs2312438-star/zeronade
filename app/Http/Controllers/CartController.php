@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -54,8 +57,43 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        $request->validate([
+            'fullname' => 'required|string',
+            'account' => 'required|string',
+            'address' => 'required|string',
+        ]);
+
+        $cart = session('cart', []);
+        
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->with('message', 'Cart is empty!');
+        }
+
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['price'] * ($item['quantity'] ?? 1);
+        }
+
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'fullname' => $request->fullname,
+            'account_number' => $request->account,
+            'address' => $request->address,
+            'total_amount' => $total,
+            'status' => 'Pending',
+        ]);
+
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_name' => $item['name'],
+                'price' => $item['price'],
+                'quantity' => $item['quantity'] ?? 1,
+            ]);
+        }
+
         session()->forget('cart');
-        session(['message' => '✅ Checkout complete! Your order has been processed.']);
+        session(['message' => '✅ Order placed successfully! ID: ' . $order->id]);
         return redirect()->route('cart.index');
     }
 }
